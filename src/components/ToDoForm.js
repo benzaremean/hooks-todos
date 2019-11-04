@@ -1,30 +1,46 @@
-import React, { useState, useContext, useEffect } from "react";
-import ToDosContext from "../context";
+import React, { useState, useContext, useEffect } from 'react'
+import ToDosContext from '../context'
+import axios from 'axios'
+import uuidv4 from 'uuid/v4'
 
 export default function ToDoForm() {
-  const [todo, setTodo] = useState("");
+  const [todo, setTodo] = useState('')
   const {
     state: { currentToDo = {} },
-    dispatch
-  } = useContext(ToDosContext);
+    dispatch,
+  } = useContext(ToDosContext)
 
   useEffect(() => {
     if (currentToDo.text) {
-      setTodo(currentToDo.text);
+      setTodo(currentToDo.text)
     } else {
-        setTodo("")
+      setTodo('')
     }
-  }, [currentToDo.id]);
+  }, [currentToDo.id])
 
-  const handleSubmit = event => {
-    event.preventDefault();
+  const handleSubmit = async event => {
+    event.preventDefault()
     if (currentToDo.text) {
-      dispatch({ type: "UPDATE_TODO", payload: todo });
+      const response = await axios.patch(
+        `https://hooks-api.benzaremean.now.sh/todos/${currentToDo.id}`,
+        {
+          text: todo,
+        }
+      )
+      dispatch({ type: 'UPDATE_TODO', payload: response.data })
     } else {
-      dispatch({ type: "ADD_TODO", payload: todo });
+      const response = await axios.post(
+        `https://hooks-api.benzaremean.now.sh/todos`,
+        {
+          id: uuidv4(),
+          text: todo,
+          complete: false,
+        }
+      )
+      dispatch({ type: 'ADD_TODO', payload: response.data })
     }
-    setTodo("");
-  };
+    setTodo('')
+  }
   return (
     <form onSubmit={handleSubmit} className="flex justify-center p-5">
       <input
@@ -34,5 +50,5 @@ export default function ToDoForm() {
         value={todo}
       />
     </form>
-  );
+  )
 }

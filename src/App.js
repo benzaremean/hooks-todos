@@ -1,29 +1,29 @@
-import React, { useContext, useReducer } from "react";
-import { UserContext } from "./index";
+import React, { useContext, useReducer } from 'react'
+import { UserContext } from './index'
 
 const initialState = {
-  count: 0
+  count: 0,
 }
 
 function reducer(state, action) {
-  switch(action.type) {
-    case "increment":
+  switch (action.type) {
+    case 'increment':
       return {
-        count: state.count + 1
+        count: state.count + 1,
       }
-    case "decrement":
+    case 'decrement':
       return {
-        count: state.count - 1
+        count: state.count - 1,
       }
-    case "reset":
+    case 'reset':
     default:
       return initialState
   }
 }
 
 function App() {
-  const [state, dispatch] = useReducer(reducer, initialState);
-  const value = useContext(UserContext);
+  const [state, dispatch] = useReducer(reducer, initialState)
+  const value = useContext(UserContext)
   return (
     // pre hooks way
     // <div>
@@ -35,24 +35,24 @@ function App() {
       Count: {state.count}
       <button
         className="border m-1 p-1"
-        onClick={() => dispatch({ type: 'increment'})}
+        onClick={() => dispatch({ type: 'increment' })}
       >
         Increment
       </button>
       <button
         className="border m-1 p-1"
-        onClick={() => dispatch({ type: 'decrement'})}
+        onClick={() => dispatch({ type: 'decrement' })}
       >
         Decrement
       </button>
       <button
         className="border m-1 p-1"
-        onClick={() => dispatch({ type: 'reset'})}
+        onClick={() => dispatch({ type: 'reset' })}
       >
         Reset
       </button>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
